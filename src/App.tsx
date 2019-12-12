@@ -4,6 +4,7 @@ import "./App.css";
 import About from "./components/pages/About";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
+import User from "./components/users/User";
 import Spinner from "./components/layout/Spinner";
 import Search from "./components/users/Search";
 import Alert from "./components/layout/Alert";
@@ -11,6 +12,7 @@ import Alert from "./components/layout/Alert";
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   };
@@ -28,6 +30,16 @@ class App extends Component {
       users: json.items,
       loading: false
     });
+  };
+
+  getUser = async (username: string) => {
+    const res = await fetch(
+      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    let json = await res.json();
+      this.setState({
+        user: json
+      });
   };
 
   clearUsers = () => {
@@ -52,7 +64,7 @@ class App extends Component {
   };
 
   render() {
-    const { users, loading, alert } = this.state;
+    const { users, loading, alert, user } = this.state;
     return (
       <Router>
         <Fragment>
@@ -81,6 +93,18 @@ class App extends Component {
                 <Route exact path="/about">
                   <About></About>
                 </Route>
+                <Route
+                  exact
+                  path="/user/:login"
+                  render={props => (
+                    <User
+                      {...props}
+                      getUser={this.getUser}
+                      user={user}
+                      loading={loading}
+                    />
+                  )}
+                ></Route>
               </Switch>
             </div>
           )}

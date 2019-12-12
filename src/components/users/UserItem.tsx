@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface UserItemInterface {
   id: number;
@@ -15,17 +16,18 @@ interface UserItemProps {
 interface UserItemState {}
 
 const UserItem = (props: UserItemProps) => {
+  const { login } = props.userItem;
   return (
-    <div className='card text-center'>
+    <div className="card text-center">
       <img
         src={props.userItem.avatar_url}
-        alt='avatar'
+        alt="avatar"
         style={{ width: "60px" }}
       />
-      <h3>{props.userItem.login}</h3>
-      <a href={props.userItem.html_url} className='btn btn-dark btn-sm my-1'>
+      <h3>{login}</h3>
+      <Link to={`/user/${login}`} className="btn btn-dark btn-sm my-1">
         More
-      </a>
+      </Link>
     </div>
   );
 };
