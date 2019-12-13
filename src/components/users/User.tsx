@@ -1,38 +1,42 @@
 import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
+import Repos from '../repos/Repos';
 
 interface UserProps {
   getUser(username: string): any;
-  user: any;
+  getUserRepos(username: string): any;
+  user: SingleUser;
   loading: boolean;
   match: any;
+  repos: any
 }
-class User extends Component<UserProps> {
+
+interface SingleUser {
+  name: string;
+  avatar_url: string;
+  location: string;
+  bio: string;
+  blog: string;
+  login: string;
+  html_url: string;
+  followers: string;
+  following: string;
+  public_repos: string;
+  public_gists: string;
+  company: string;
+  hireable: boolean;
+}
+const User = ({name, avatar_url, location, bio, blog, login, html_url, followers, following, public_repos, public_gists, company, hireable}: SingleUserProps) => {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login)
   }
   shouldComponentUpdate(nextProps: any) {
     const user = this.props.user !== nextProps.user;
     return user
   }
-  render() {
-    const {
-      name,
-      avatar_url,
-      location,
-      bio,
-      blog,
-      login,
-      html_url,
-      followers,
-      following,
-      public_repos,
-      public_gists,
-      company,
-      hireable
-    } = this.props.user;
-    const { loading } = this.props;
+    const { loading, repos } = this.props;
     if(loading){
      return <Spinner />
     } 
@@ -43,7 +47,7 @@ class User extends Component<UserProps> {
       {hireable ? <i className="fas fa-check text-success"/> : <i className="fas fa-times-circle text-danger"></i>}
       <div className="card grid-2">
         <div className="all-center">
-          <img src={avatar_url} className="round-img" style={{width: '150px'}} alt={`Picture of ${name}`} />
+          <img src={avatar_url} className="round-img" style={{width: '150px'}} alt={`${name}`} />
           <h1>{name}</h1>
           <p>Location: {location}</p>
         </div>
@@ -86,8 +90,9 @@ class User extends Component<UserProps> {
             <div className="badge badge-light">Public Repos: {public_repos}</div>
             <div className="badge badge-dark">Public Gists: {public_gists}</div>
       </div>
+
+      <Repos repos={repos} />
     </Fragment>;
-  }
 }
 
 export default User;
