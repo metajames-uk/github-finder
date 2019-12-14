@@ -38,9 +38,9 @@ class App extends Component {
       `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
     let json = await res.json();
-      this.setState({
-        user: json
-      });
+    this.setState({
+      user: json
+    });
   };
 
   getUserRepos = async (username: string) => {
@@ -51,7 +51,7 @@ class App extends Component {
     this.setState({
       repos: json
     });
-  }
+  };
 
   clearUsers = () => {
     this.setState({
@@ -83,12 +83,12 @@ class App extends Component {
           {loading ? (
             <Spinner />
           ) : (
-            <div className="container">
+            <div className='container'>
               {alert && <Alert alert={alert}></Alert>}
               <Switch>
                 <Route
                   exact
-                  path="/"
+                  path='/'
                   render={props => (
                     <Fragment>
                       <Search
@@ -101,12 +101,12 @@ class App extends Component {
                     </Fragment>
                   )}
                 ></Route>
-                <Route exact path="/about">
+                <Route exact path='/about'>
                   <About></About>
                 </Route>
                 <Route
                   exact
-                  path="/user/:login"
+                  path='/user/:login'
                   render={props => (
                     <User
                       {...props}
