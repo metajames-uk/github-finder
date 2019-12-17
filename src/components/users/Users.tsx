@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import UserItem from "./UserItem";
 import Spinner from "../../components/layout/Spinner";
+import GithubContext from '../../context/github/githubContext';
 
 interface usersApi {
   login: string;
@@ -28,13 +29,17 @@ interface UsersProps {
   loading: boolean;
 }
 
-const Users = (props: UsersProps) => {
-  if (props.loading) {
+const Users = () => {
+  const githubContext:any = useContext(GithubContext);
+
+  const { loading, users } = githubContext;
+
+  if (loading) {
     return <Spinner />;
   }
   return (
     <div style={userStyle}>
-      {props.users.map((user, index) => {
+      {users.map((user: any, index: any) => {
         return <UserItem key={index} userItem={user} />;
       })}
     </div>
